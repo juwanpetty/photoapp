@@ -33,9 +33,12 @@ As a blank, I want to be able to blank, so that blank.
 
 ## Modeling our Data
 **Post (Collection)**
-    title:string
-    desrciption:text
-    link:string
+- title:string
+- desrciption:text
+- link:string
+
+**Picture**
+- image:string
 
 **User**
 
