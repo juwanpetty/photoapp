@@ -2,6 +2,7 @@ class CollectionsController < ApplicationController
     before_action :find_collection, only: [:show, :edit, :update, :destroy]
 
     def index
+        @collection = Collection.all
     end
 
     def new
@@ -12,6 +13,13 @@ class CollectionsController < ApplicationController
         @collection = Collection.new collection_params
 
         if @collection.save
+            if params[:images]
+
+                params[:images].each { |image|
+                  @collection.pictures.create(image: image)
+                }
+            end
+
             redirect_to @collection, notice: "Your Collection saved."
         else 
             render 'new', notice: "Your Collection was not saved successfully."
@@ -23,6 +31,13 @@ class CollectionsController < ApplicationController
 
     def update
         if @collection.update collection_params
+            if params[:images]
+
+                params[:images].each { |image|
+                    @collection.pictures.create(image: image)
+                }
+            end
+
             redirect_to @collection, notice: "Your Collection was successfully updated."
         else
             render 'edit', notice: "your Collection was not successfully updated. Try again."
@@ -30,6 +45,7 @@ class CollectionsController < ApplicationController
     end
 
     def show
+        @pictures = @collection.pictures
     end
 
     def destroy
@@ -40,7 +56,7 @@ class CollectionsController < ApplicationController
     private
 
     def collection_params
-        params.require(:collection).permit(:title, :description)
+        params.require(:collection).permit(:title, :description, :pictures)
     end
 
     def find_collection
